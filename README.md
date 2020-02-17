@@ -5,5 +5,5 @@
 forked from AlexGyver/GyverRGB (https://github.com/AlexGyver/GyverRGB)
 
 
-## Схема
+## Scheme
 ![SCHEME](https://github.com/netkot/RGB-Led-lamp/blob/master/schemes/scheme1.png)
