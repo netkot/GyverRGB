@@ -10,7 +10,9 @@ boolean getStarted;
 byte index;
 String string_convert = "";
 
+
 void sendSettings() {
+
   request = "";
   request += String("GS ");
   request += String(presetNum + 1);
@@ -23,59 +25,90 @@ void sendSettings() {
   }
   request += ONflag;
   btSerial.print(request);
+
 }
 
 void bluetoothTick() {
+
+
   parsing();               // функция парсинга
   if (recievedFlag) {     // если получены данные
+
     recievedFlag = false;
-    /*for (byte i = 0; i < 7; i++) {
-      Serial.print(intData[i]);
-      Serial.print(" ");
-      } Serial.println(" ");*/
+
     switch (intData[0]) {
       case 0:   // запрос онлайна
         request = "OK ";
         request += String(batPerc);
         btSerial.print(request);
         break;
+
       case 1:   // запрос состояния (настройки, пресет)
         sendSettings();
+        btnControl = false;
         break;
+
       case 2:   // применить настройки
         for (byte i = 0; i < 6; i++) {
           presetSettings[i] = intData[i + 1];
         }
+
         presetSettings[setAmount[modeNum] - 1] = intData[6]; // белый
         settingsChanged = true;
-        
+
         if (intData[7] != 10) invSet = intData[7];
         else invSet = setAmount[modeNum] - 1; // ой костыли бл*ть
+
         navPos = 2;
         invFlag = true;
-        drawSettings();
         changeFlag = true;
+        btnControl = false;
+        eeprFlag = true;
+        eeprTimer = millis();            
         break;
+
+
+
       case 3:   // смена пресета
         changePresetTo(intData[1]);
         sendSettings();
+        btnControl = false;
+        eeprFlag = true;
+        eeprTimer = millis();
         break;
+
+
       case 4:   // смена режима
         modeNum = intData[1];
         changeMode();
         sendSettings();
+        btnControl = false;
+        eeprFlag = true;
+        eeprTimer = millis();
         break;
+
       case 5:   // вкл/выкл
-        if (intData[1]) LEDon();
-        else LEDoff();
+        if (intData[1])   { 
+          LEDon();
+        }
+        else    {     
+          LEDoff();        }
+          btnControl = false;
         break;
     }
+
+
   }
 }
 
 void parsing() {
+
   if (btSerial.available() > 0) {
+
+
     char incomingByte = btSerial.read();      // обязательно ЧИТАЕМ входящий символ
+
+
     if (getStarted) {                         // если приняли начальный символ (парсинг разрешён)
       if (incomingByte != divider && incomingByte != ending) {   // если это не пробел И не конец
         string_convert += incomingByte;       // складываем в строку

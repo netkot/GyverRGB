@@ -8,24 +8,24 @@ void changeNav() {
     invSet = 0;
   }
   else invFlag = false;
-  drawInfo();
-  drawSettings();
+  //  drawInfo();
+  //  drawSettings();
 }
 
 void changePreset() {
   settingsChanged = true;
   invSet = 0;
-  readSettings();    // читаем новые настройки
-  drawInfo();
-  drawSettings();
+  readSettings();    // читаем новые настройки из eprom
+  //  drawInfo();
+  //  drawSettings();
 }
 
 void changeMode() {
   changeFlag = true;
   settingsChanged = true;
   invSet = 0;
-  drawInfo();
-  drawSettings();
+  //  drawInfo();
+  //  drawSettings();
 }
 
 // умный инкрементатор для настроек
@@ -45,6 +45,9 @@ void changePresetTo(byte preset) {
   changePreset();
 }
 
+
+
+
 // включить систему
 void LEDon() {
   ONflag = true;
@@ -55,18 +58,15 @@ void LEDon() {
 // выключить систему
 void LEDoff() {
   ONflag = false;
-  strip.setBrightness(0);
-  digitalWrite(PIN_R, 0);
-  digitalWrite(PIN_G, 0);
-  digitalWrite(PIN_B, 0);
-  digitalWrite(PIN_W, 0);
+  setRGBband (0, 0, 0);
+  FastLED.show();
 }
 
 void controlTick() {
   // ------------------ КНОПКА -------------------
 #if (USE_BTN == 1)
   btn.tick();
-  
+
   if (btn.isSingle()) {
     if (!firstStartBtn) {
       firstStartBtn = true;
@@ -77,7 +77,7 @@ void controlTick() {
       else LEDon();
     }
   }
-  
+
   if (btn.isDouble()) {
 #if (BTN_MODE == 0)
     if (++presetNum >= 10) presetNum = 0;
@@ -90,7 +90,7 @@ void controlTick() {
     eeprTimer = millis();
 #endif
   }
-  
+
   if (btn.isTriple()) {
 #if (BTN_MODE == 0)
     if (--presetNum < 0) presetNum = 0;
@@ -103,11 +103,11 @@ void controlTick() {
     eeprTimer = millis();
 #endif
   }
-  
+
   if (btn.isHolded()) {
     brightDirection = !brightDirection;
   }
-  
+
   if (btn.isStep()) {
     if (brightDirection) {
       thisBright += 5;
@@ -247,6 +247,7 @@ void controlTick() {
   }
 
   if (enc.isTurn()) {     // если был совершён поворот
+    btnControl = false;
     //Serial.println(invSet);
     if (backlState) {
       backlTimer = millis();      // сбросить таймаут дисплея
@@ -325,7 +326,8 @@ void controlTick() {
       eeprom_update_word(202, thisBright);
     } else {
       eeprom_update_byte(PRESET_ADDR, presetNum);
-      writeSettings();
+      writeSettings(); // пишем
+
     }
   }
 }

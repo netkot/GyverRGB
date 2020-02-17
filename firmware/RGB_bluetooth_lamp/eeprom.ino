@@ -1,3 +1,6 @@
+
+
+
 // --------------- РАБОТА С EEPROM --------------
 void readSettings() {
   modeNum = eeprom_read_byte((uint8_t*)presetNum);
@@ -5,6 +8,7 @@ void readSettings() {
     presetSettings[i] = eeprom_read_word((uint16_t*)(presetNum * 10 + 10 + i * 2));
   }
 }
+
 void writeSettings() {
   eeprom_update_byte(presetNum, modeNum);
   for (byte i = 0; i < setAmount[modeNum]; i++) {
