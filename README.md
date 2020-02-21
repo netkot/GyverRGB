@@ -8,6 +8,8 @@ forked from AlexGyver/GyverRGB (https://github.com/AlexGyver/GyverRGB)
 ## Scheme
 ![SCHEME](https://github.com/netkot/RGB-Led-lamp/blob/master/schemes/scheme1.png)
 
+Note: Current over Arduino is less than 160mA (white, 100% bright), so i can skip led driver.
+
 ## Images
 
 ![IMG](https://github.com/netkot/RGB-Led-lamp/blob/master/images/img_02.jpg)
