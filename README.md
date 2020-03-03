@@ -17,3 +17,10 @@ Note: Current over Arduino is less than 160mA (white, 100% bright), so i can ski
 ![IMG](https://github.com/netkot/RGB-Led-lamp/blob/master/images/img_04.jpg)
 ![IMG](https://github.com/netkot/RGB-Led-lamp/blob/master/images/img_05.jpg)
 
+
+## Light
+
+![IMG](https://github.com/netkot/RGB-Led-lamp/blob/master/images/lamp_day.jpg)
+![IMG](https://github.com/netkot/RGB-Led-lamp/blob/master/images/lamp_night.jpg)
+
+
